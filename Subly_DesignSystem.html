@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Subly Design System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<style>
+/* ── CSS Variables — Light Mode (standalone, no host dependency) ── */
+:root {
+  --bg-1: #FFFFFF;
+  --bg-2: #F5F8FF;
+  --bg-3: #EBF2FF;
+  --text-1: #1A2640;
+  --text-2: #4A5F82;
+  --text-3: #7A8FAD;
+  --border: #C2CDE8;
+  --border-strong: #8FA8D8;
+  --primary: #1866E1;
+  --primary-dark: #2142AB;
+  --primary-deep: #0F3D8C;
+  --success-bg: #E8F8F0;
+  --success-text: #0D6E3F;
+  --success-border: #9FD9BC;
+  --warning-bg: #FFF8E6;
+  --warning-text: #8A5800;
+  --warning-border: #F5C36A;
+  --danger-bg: #FFF0F0;
+  --danger-text: #9B1D1D;
+  --danger-border: #F0AAAA;
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+}
+
+[data-theme="dark"] {
+  --bg-1: #111827;
+  --bg-2: #1A2535;
+  --bg-3: #202D42;
+  --text-1: #E8EFFA;
+  --text-2: #8AA5CC;
+  --text-3: #5A7099;
+  --border: #2A3A55;
+  --border-strong: #3A5073;
+  --primary: #4D8FF5;
+  --primary-dark: #1866E1;
+  --primary-deep: #C2D9FA;
+  --success-bg: #0A2E1C;
+  --success-text: #4DC98A;
+  --success-border: #1A5E38;
+  --warning-bg: #2D1E00;
+  --warning-text: #F5C36A;
+  --warning-border: #5A3A00;
+  --danger-bg: #2D0A0A;
+  --danger-text: #F08080;
+  --danger-border: #5A1A1A;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Noto Sans KR', system-ui, sans-serif;
+  font-size: 14px;
+  background: var(--bg-1);
+  color: var(--text-1);
+  min-height: 100vh;
+  transition: background .2s, color .2s;
+}
+
+/* ── layout ── */
+.page { max-width: 900px; margin: 0 auto; padding: 28px 24px 60px; }
+
+/* ── topbar ── */
+.topbar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 18px; background: var(--bg-2);
+  border-radius: var(--radius-lg); border: 0.5px solid var(--border);
+  margin-bottom: 22px;
+}
+.topbar-title { font-size: 16px; font-weight: 500; color: var(--text-1); }
+.topbar-sub { font-size: 12px; color: var(--text-2); margin-top: 2px; }
+.toggle-wrap { display: flex; align-items: center; gap: 8px; }
+.toggle-label { font-size: 13px; color: var(--text-2); }
+.toggle { position: relative; width: 44px; height: 24px; cursor: pointer; }
+.toggle input { opacity: 0; width: 0; height: 0; position: absolute; }
+.toggle-track {
+  position: absolute; inset: 0; background: var(--border-strong);
+  border-radius: 12px; transition: background .2s;
+}
+.toggle input:checked ~ .toggle-track { background: #1866E1; }
+.toggle-thumb {
+  position: absolute; top: 3px; left: 3px;
+  width: 18px; height: 18px; border-radius: 50%;
+  background: #fff; transition: transform .2s;
+  box-shadow: 0 1px 3px rgba(0,0,0,.25);
+}
+.toggle input:checked ~ .toggle-thumb { transform: translateX(20px); }
+.mode-badge {
+  font-size: 11px; font-weight: 500; padding: 3px 8px;
+  border-radius: 20px; border: 0.5px solid var(--border);
+  color: var(--text-2); background: var(--bg-1);
+}
+
+/* ── tabs ── */
+.tabs {
+  display: flex; gap: 4px; margin-bottom: 18px;
+  background: var(--bg-2); padding: 4px;
+  border-radius: var(--radius-md); border: 0.5px solid var(--border);
+}
+.tab {
+  flex: 1; padding: 7px; font-size: 12px; font-weight: 500;
+  color: var(--text-2); border-radius: 6px; cursor: pointer;
+  text-align: center; border: none; background: transparent;
+  font-family: inherit; transition: all .15s;
+}
+.tab.active {
+  background: var(--bg-1); color: var(--text-1);
+  border: 0.5px solid var(--border);
+}
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+
+/* ── section ── */
+.section { margin-bottom: 28px; }
+.section-title {
+  font-size: 12px; font-weight: 500; color: var(--text-2);
+  text-transform: uppercase; letter-spacing: .06em;
+  margin-bottom: 12px; padding-bottom: 6px;
+  border-bottom: 0.5px solid var(--border);
+}
+
+/* ── color grid ── */
+.color-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 10px;
+}
+.color-card {
+  border-radius: var(--radius-md); overflow: hidden;
+  border: 0.5px solid var(--border);
+}
+.color-swatch { height: 52px; }
+.color-info { padding: 8px 10px; background: var(--bg-1); }
+.color-name { font-size: 12px; font-weight: 500; color: var(--text-1); }
+.color-hex { font-size: 11px; color: var(--text-2); font-family: monospace; margin-top: 2px; }
+.color-role { font-size: 10px; color: var(--text-3); margin-top: 2px; }
+
+/* ── token table ── */
+.token-wrap { overflow-x: auto; }
+.token-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.token-table th {
+  padding: 7px 10px; text-align: left; font-weight: 500;
+  color: var(--text-2); background: var(--bg-2);
+  border-bottom: 0.5px solid var(--border);
+}
+.token-table td {
+  padding: 7px 10px; border-bottom: 0.5px solid var(--border);
+  color: var(--text-1); vertical-align: middle;
+}
+.token-table tr:last-child td { border-bottom: none; }
+.token-table tr:hover td { background: var(--bg-2); }
+.token-var {
+  font-family: monospace; font-size: 11px; color: var(--text-2);
+  background: var(--bg-2); padding: 2px 6px;
+  border-radius: 4px; border: 0.5px solid var(--border);
+}
+
+/* ── type scale ── */
+.type-row {
+  display: flex; align-items: baseline; gap: 12px;
+  padding: 10px 0; border-bottom: 0.5px solid var(--border);
+}
+.type-row:last-child { border-bottom: none; }
+.type-meta { width: 120px; flex-shrink: 0; }
+.type-name { font-size: 11px; font-weight: 500; color: var(--text-2); }
+.type-spec { font-size: 10px; color: var(--text-3); margin-top: 2px; font-family: monospace; }
+.type-sample { color: var(--text-1); }
+.type-use { font-size: 11px; color: var(--text-3); margin-left: 8px; font-weight: 400; }
+
+/* ── spacing ── */
+.spacing-row {
+  display: flex; align-items: center; gap: 12px;
+  padding: 5px 0; border-bottom: 0.5px solid var(--border);
+}
+.spacing-row:last-child { border-bottom: none; }
+.spacing-label { font-size: 11px; color: var(--text-2); width: 72px; font-family: monospace; }
+.spacing-bar-wrap { flex: 0 0 160px; height: 20px; display: flex; align-items: center; }
+.spacing-bar { height: 7px; background: #1866E1; border-radius: 2px; opacity: .65; }
+.spacing-val { font-size: 11px; color: var(--text-3); width: 36px; font-family: monospace; }
+.spacing-use { font-size: 11px; color: var(--text-3); flex: 1; }
+
+/* ── components ── */
+.comp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.comp-card {
+  background: var(--bg-1); border: 0.5px solid var(--border);
+  border-radius: var(--radius-lg); padding: 14px;
+}
+.comp-card-title {
+  font-size: 11px; font-weight: 500; color: var(--text-2);
+  margin-bottom: 12px; text-transform: uppercase; letter-spacing: .05em;
+}
+
+/* buttons */
+.btn-group { display: flex; flex-direction: column; gap: 7px; }
+.btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 8px 14px; border-radius: var(--radius-md);
+  font-size: 13px; font-weight: 500; cursor: pointer;
+  font-family: inherit; border: none;
+}
+.btn-primary { background: #1866E1; color: #fff; }
+.btn-secondary { background: transparent; border: 0.5px solid #1866E1; color: #1866E1; }
+.btn-ghost { background: transparent; border: 0.5px solid var(--border); color: var(--text-1); }
+.btn-danger { background: var(--danger-bg); border: 0.5px solid var(--danger-border); color: var(--danger-text); }
+
+/* inputs */
+.input-group { display: flex; flex-direction: column; gap: 8px; }
+.input-label { font-size: 12px; color: var(--text-2); margin-bottom: 3px; }
+.input-field {
+  width: 100%; padding: 7px 10px;
+  border-radius: var(--radius-md);
+  border: 0.5px solid var(--border-strong);
+  background: var(--bg-1); font-size: 13px; color: var(--text-1);
+  font-family: inherit; outline: none; transition: border-color .15s, box-shadow .15s;
+}
+.input-field:focus { border-color: #1866E1; box-shadow: 0 0 0 3px rgba(24,102,225,.12); }
+
+/* badges */
+.badge-group { display: flex; flex-wrap: wrap; gap: 6px; }
+.badge { font-size: 11px; font-weight: 500; padding: 3px 8px; border-radius: 20px; }
+.badge-blue { background: #EBF2FF; color: #2142AB; border: 0.5px solid #C2CDE8; }
+.badge-green { background: var(--success-bg); color: var(--success-text); border: 0.5px solid var(--success-border); }
+.badge-amber { background: var(--warning-bg); color: var(--warning-text); border: 0.5px solid var(--warning-border); }
+.badge-red { background: var(--danger-bg); color: var(--danger-text); border: 0.5px solid var(--danger-border); }
+.badge-gray { background: var(--bg-2); color: var(--text-2); border: 0.5px solid var(--border); }
+
+/* metric card */
+.metric-card {
+  background: var(--bg-2); border-radius: var(--radius-md);
+  padding: 10px 12px; border: 0.5px solid var(--border);
+}
+.metric-label { font-size: 11px; color: var(--text-2); }
+.metric-val { font-size: 20px; font-weight: 500; color: var(--text-1); margin-top: 2px; }
+.metric-sub { font-size: 10px; color: var(--text-3); margin-top: 2px; }
+
+/* sub item */
+.svc-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 10px; background: var(--bg-2);
+  border-radius: var(--radius-md); border: 0.5px solid var(--border);
+  margin-bottom: 6px;
+}
+.svc-item:last-child { margin-bottom: 0; }
+.svc-icon {
+  width: 32px; height: 32px; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; font-size: 16px;
+}
+.svc-info { flex: 1; }
+.svc-name { font-size: 13px; font-weight: 500; color: var(--text-1); }
+.svc-meta { font-size: 11px; color: var(--text-2); }
+.svc-right { text-align: right; }
+.svc-price { font-size: 13px; font-weight: 500; color: var(--text-1); }
+
+/* nav bar */
+.nav-bar {
+  display: flex; background: var(--bg-2);
+  border-radius: var(--radius-md); border: 0.5px solid var(--border); overflow: hidden;
+}
+.nav-item {
+  flex: 1; display: flex; flex-direction: column; align-items: center;
+  padding: 10px 4px; border-right: 0.5px solid var(--border); font-size: 10px;
+}
+.nav-item:last-child { border-right: none; }
+.nav-item.active { background: var(--bg-1); color: #1866E1; }
+.nav-item.active .nav-lbl { color: #1866E1; font-weight: 500; }
+.nav-lbl { color: var(--text-2); margin-top: 3px; font-size: 10px; }
+.nav-fab {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: #1866E1; display: flex; align-items: center;
+  justify-content: center; margin-top: -4px;
+}
+
+/* ── figma panel ── */
+.figma-panel {
+  background: var(--bg-2); border-radius: var(--radius-lg);
+  border: 0.5px solid var(--border); overflow: hidden;
+}
+.figma-panel-header {
+  padding: 10px 14px; background: var(--bg-1);
+  border-bottom: 0.5px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.figma-panel-title { font-size: 13px; font-weight: 500; color: var(--text-1); }
+.figma-copy-btn {
+  font-size: 11px; color: #1866E1; cursor: pointer;
+  padding: 5px 10px; border: 0.5px solid #C2CDE8;
+  border-radius: var(--radius-md); background: transparent; font-family: inherit;
+  display: flex; align-items: center; gap: 4px;
+}
+.figma-copy-btn:hover { background: #EBF2FF; }
+.figma-body { padding: 14px 16px; }
+.figma-group { margin-bottom: 18px; }
+.figma-group:last-child { margin-bottom: 0; }
+.figma-group-title {
+  font-size: 11px; font-weight: 500; color: var(--text-2);
+  margin-bottom: 7px; text-transform: uppercase; letter-spacing: .05em;
+}
+.figma-row {
+  display: flex; align-items: center; gap: 8px;
+  padding: 6px 0; border-bottom: 0.5px solid var(--border);
+}
+.figma-row:last-child { border-bottom: none; }
+.dot { width: 13px; height: 13px; border-radius: 3px; flex-shrink: 0; border: 0.5px solid rgba(0,0,0,.1); }
+.dot-dark { border-color: rgba(255,255,255,.15); }
+.figma-var { font-size: 11px; font-family: monospace; color: var(--text-1); flex: 1; min-width: 0; }
+.figma-lv { font-size: 11px; font-family: monospace; color: var(--text-2); }
+.figma-dv { font-size: 11px; font-family: monospace; color: var(--text-3); }
+.figma-sep { font-size: 10px; color: var(--text-3); }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- topbar -->
+  <div class="topbar">
+    <div>
+      <div class="topbar-title">Subly Design System</div>
+      <div class="topbar-sub">Royal Azure · Noto Sans KR · Light / Dark Mode</div>
+    </div>
+    <div class="toggle-wrap">
+      <span class="toggle-label" id="mode-label">라이트 모드</span>
+      <label class="toggle" aria-label="다크모드 토글">
+        <input type="checkbox" id="dark-toggle">
+        <span class="toggle-track"></span>
+        <span class="toggle-thumb"></span>
+      </label>
+      <span class="mode-badge" id="mode-badge">Light</span>
+    </div>
+  </div>
+
+  <!-- tabs -->
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('colors')">색상 토큰</button>
+    <button class="tab" onclick="switchTab('type')">타이포그래피</button>
+    <button class="tab" onclick="switchTab('spacing')">스페이싱</button>
+    <button class="tab" onclick="switchTab('components')">컴포넌트</button>
+    <button class="tab" onclick="switchTab('figma')">피그마 변수</button>
+  </div>
+
+  <!-- 색상 토큰 -->
+  <div class="tab-content active" id="tab-colors">
+    <div class="section">
+      <div class="section-title">Primary — Royal Azure</div>
+      <div class="color-grid" id="primary-grid"></div>
+    </div>
+    <div class="section">
+      <div class="section-title">Semantic — 상태 색상</div>
+      <div class="color-grid" id="semantic-grid"></div>
+    </div>
+    <div class="section">
+      <div class="section-title">Neutral — 배경 & 텍스트 & 보더</div>
+      <div class="color-grid" id="neutral-grid"></div>
+    </div>
+  </div>
+
+  <!-- 타이포그래피 -->
+  <div class="tab-content" id="tab-type">
+    <div class="section">
+      <div class="section-title">타입 스케일</div>
+      <div id="type-scale"></div>
+    </div>
+    <div class="section">
+      <div class="section-title">폰트 스펙</div>
+      <div class="token-wrap">
+        <table class="token-table">
+          <thead><tr><th>항목</th><th>값</th><th>피그마 변수</th></tr></thead>
+          <tbody>
+            <tr><td>Font Family</td><td>Noto Sans KR</td><td><span class="token-var">font/family/primary</span></td></tr>
+            <tr><td>Font Weight — Regular</td><td>400</td><td><span class="token-var">font/weight/regular</span></td></tr>
+            <tr><td>Font Weight — Medium</td><td>500</td><td><span class="token-var">font/weight/medium</span></td></tr>
+            <tr><td>Line Height — Body</td><td>1.7</td><td><span class="token-var">font/lineHeight/body</span></td></tr>
+            <tr><td>Line Height — Heading</td><td>1.3</td><td><span class="token-var">font/lineHeight/heading</span></td></tr>
+            <tr><td>Letter Spacing</td><td>0</td><td><span class="token-var">font/letterSpacing/default</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- 스페이싱 -->
+  <div class="tab-content" id="tab-spacing">
+    <div class="section">
+      <div class="section-title">스페이싱 스케일 (4px 기반)</div>
+      <div id="spacing-grid"></div>
+    </div>
+    <div class="section">
+      <div class="section-title">보더 & 라디우스</div>
+      <div class="token-wrap">
+        <table class="token-table">
+          <thead><tr><th>토큰</th><th>값</th><th>용도</th></tr></thead>
+          <tbody>
+            <tr><td><span class="token-var">radius/sm</span></td><td>6px</td><td>뱃지, 태그, 작은 버튼</td></tr>
+            <tr><td><span class="token-var">radius/md</span></td><td>8px</td><td>버튼, 입력 폼, 셀</td></tr>
+            <tr><td><span class="token-var">radius/lg</span></td><td>12px</td><td>카드, 패널, 모달</td></tr>
+            <tr><td><span class="token-var">radius/xl</span></td><td>16px</td><td>시트, 대형 컨테이너</td></tr>
+            <tr><td><span class="token-var">radius/full</span></td><td>9999px</td><td>알림 뱃지, 토글</td></tr>
+            <tr><td><span class="token-var">border/default</span></td><td>0.5px</td><td>카드, 테이블 기본 선</td></tr>
+            <tr><td><span class="token-var">border/emphasis</span></td><td>1px</td><td>선택 상태, 강조 테두리</td></tr>
+            <tr><td><span class="token-var">border/featured</span></td><td>2px</td><td>선택된 카드, 주요 항목</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- 컴포넌트 -->
+  <div class="tab-content" id="tab-components">
+    <div class="comp-grid">
+
+      <div class="comp-card">
+        <div class="comp-card-title">버튼</div>
+        <div class="btn-group">
+          <button class="btn btn-primary"><i class="ti ti-check" aria-hidden="true"></i> Primary</button>
+          <button class="btn btn-secondary"><i class="ti ti-plus" aria-hidden="true"></i> Secondary</button>
+          <button class="btn btn-ghost">Ghost</button>
+          <button class="btn btn-danger"><i class="ti ti-trash" aria-hidden="true"></i> Danger</button>
+        </div>
+      </div>
+
+      <div class="comp-card">
+        <div class="comp-card-title">입력 폼</div>
+        <div class="input-group">
+          <div>
+            <div class="input-label">서비스 이름</div>
+            <input class="input-field" type="text" value="Netflix">
+          </div>
+          <div>
+            <div class="input-label">월 구독료</div>
+            <input class="input-field" type="text" value="₩ 17,000">
+          </div>
+        </div>
+      </div>
+
+      <div class="comp-card">
+        <div class="comp-card-title">뱃지 & 태그</div>
+        <div class="badge-group">
+          <span class="badge badge-red">D-1 갱신</span>
+          <span class="badge badge-amber">D-3 갱신</span>
+          <span class="badge badge-green">활성</span>
+          <span class="badge badge-blue">OTT</span>
+          <span class="badge badge-blue">클라우드</span>
+          <span class="badge badge-green">무료체험</span>
+          <span class="badge badge-gray">해지예정</span>
+          <span class="badge badge-gray">음악</span>
+        </div>
+      </div>
+
+      <div class="comp-card">
+        <div class="comp-card-title">대시보드 카드</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          <div class="metric-card">
+            <div class="metric-label">이번 달 총액</div>
+            <div class="metric-val">₩84,500</div>
+            <div class="metric-sub">지난달 대비 +₩3,900</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label">구독 서비스</div>
+            <div class="metric-val">8개</div>
+            <div class="metric-sub">이번달 갱신 3건</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="comp-card">
+        <div class="comp-card-title">구독 아이템</div>
+        <div class="svc-item">
+          <div class="svc-icon" style="background:#EBF2FF">
+            <i class="ti ti-device-tv" style="color:#1866E1" aria-hidden="true"></i>
+          </div>
+          <div class="svc-info">
+            <div class="svc-name">넷플릭스</div>
+            <div class="svc-meta">매월 1일 · OTT</div>
+          </div>
+          <div class="svc-right">
+            <div class="svc-price">₩17,000</div>
+            <span class="badge badge-red" style="font-size:10px">D-1</span>
+          </div>
+        </div>
+        <div class="svc-item">
+          <div class="svc-icon" style="background:#E8F8F0">
+            <i class="ti ti-music" style="color:#0D6E3F" aria-hidden="true"></i>
+          </div>
+          <div class="svc-info">
+            <div class="svc-name">멜론</div>
+            <div class="svc-meta">매월 4일 · 음악</div>
+          </div>
+          <div class="svc-right">
+            <div class="svc-price">₩10,900</div>
+            <span class="badge badge-amber" style="font-size:10px">D-3</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="comp-card">
+        <div class="comp-card-title">네비게이션 바</div>
+        <div class="nav-bar">
+          <div class="nav-item active">
+            <i class="ti ti-home" style="font-size:18px;color:#1866E1" aria-hidden="true"></i>
+            <span class="nav-lbl">홈</span>
+          </div>
+          <div class="nav-item">
+            <i class="ti ti-list" style="font-size:18px;color:var(--text-2)" aria-hidden="true"></i>
+            <span class="nav-lbl">목록</span>
+          </div>
+          <div class="nav-item" style="justify-content:center">
+            <div class="nav-fab">
+              <i class="ti ti-plus" style="font-size:16px;color:#fff" aria-hidden="true"></i>
+            </div>
+          </div>
+          <div class="nav-item">
+            <i class="ti ti-chart-bar" style="font-size:18px;color:var(--text-2)" aria-hidden="true"></i>
+            <span class="nav-lbl">리포트</span>
+          </div>
+          <div class="nav-item">
+            <i class="ti ti-settings" style="font-size:18px;color:var(--text-2)" aria-hidden="true"></i>
+            <span class="nav-lbl">설정</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 피그마 변수 -->
+  <div class="tab-content" id="tab-figma">
+    <div class="figma-panel">
+      <div class="figma-panel-header">
+        <div class="figma-panel-title">Figma Variables — Color Tokens</div>
+        <button class="figma-copy-btn" onclick="copyFigma()">
+          <i class="ti ti-copy" aria-hidden="true"></i> 전체 복사
+        </button>
+      </div>
+      <div class="figma-body" id="figma-vars"></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const COLORS = {
+  primary: [
+    {name:'Primary / 50',  l:'#EBF2FF', d:'#0F1E3D', role:'선택 영역, 대형 배경',      v:'color/primary/50'},
+    {name:'Primary / 100', l:'#C2D9FA', d:'#1A3366', role:'호버 배경, 라이트 보더',    v:'color/primary/100'},
+    {name:'Primary / 200', l:'#8FBAEF', d:'#2B5099', role:'비활성 아이콘',             v:'color/primary/200'},
+    {name:'Primary / 400', l:'#1866E1', d:'#4D8FF5', role:'Primary 버튼, 링크',       v:'color/primary/400'},
+    {name:'Primary / 600', l:'#2142AB', d:'#1866E1', role:'다크 Primary, 헤더',       v:'color/primary/600'},
+    {name:'Primary / 800', l:'#0F3D8C', d:'#C2D9FA', role:'딥 네이비, 텍스트 강조',   v:'color/primary/800'},
+    {name:'Primary / 900', l:'#071F4D', d:'#EBF2FF', role:'가장 어두운 강조',         v:'color/primary/900'},
+  ],
+  semantic: [
+    {name:'Success / bg',   l:'#E8F8F0', d:'#0A2E1C', role:'성공 상태 배경',  v:'color/success/bg'},
+    {name:'Success / text', l:'#0D6E3F', d:'#4DC98A', role:'성공 텍스트',     v:'color/success/text'},
+    {name:'Warning / bg',   l:'#FFF8E6', d:'#2D1E00', role:'주의 상태 배경',  v:'color/warning/bg'},
+    {name:'Warning / text', l:'#8A5800', d:'#F5C36A', role:'주의 텍스트',     v:'color/warning/text'},
+    {name:'Danger / bg',    l:'#FFF0F0', d:'#2D0A0A', role:'위험 상태 배경',  v:'color/danger/bg'},
+    {name:'Danger / text',  l:'#9B1D1D', d:'#F08080', role:'위험 텍스트',     v:'color/danger/text'},
+  ],
+  neutral: [
+    {name:'Background / 1', l:'#FFFFFF', d:'#111827', role:'최상위 배경',         v:'color/bg/primary'},
+    {name:'Background / 2', l:'#F5F8FF', d:'#1A2535', role:'카드, 패널 배경',     v:'color/bg/secondary'},
+    {name:'Background / 3', l:'#EBF2FF', d:'#202D42', role:'선택, 호버 배경',     v:'color/bg/tertiary'},
+    {name:'Text / Primary',  l:'#1A2640', d:'#E8EFFA', role:'본문 텍스트',        v:'color/text/primary'},
+    {name:'Text / Secondary',l:'#4A5F82', d:'#8AA5CC', role:'보조 텍스트, 레이블',v:'color/text/secondary'},
+    {name:'Text / Hint',     l:'#7A8FAD', d:'#5A7099', role:'플레이스홀더, 힌트', v:'color/text/hint'},
+    {name:'Border',          l:'#C2CDE8', d:'#2A3A55', role:'기본 보더',          v:'color/border/default'},
+    {name:'Border Strong',   l:'#8FA8D8', d:'#3A5073', role:'강조 보더, 선택 상태',v:'color/border/strong'},
+  ],
+};
+
+const TYPE = [
+  {name:'Display', size:'28px', weight:'500', lh:'1.3', use:'앱 타이틀'},
+  {name:'H1',      size:'22px', weight:'500', lh:'1.3', use:'페이지 제목'},
+  {name:'H2',      size:'18px', weight:'500', lh:'1.4', use:'섹션 제목'},
+  {name:'H3',      size:'15px', weight:'500', lh:'1.4', use:'카드 제목'},
+  {name:'Body L',  size:'15px', weight:'400', lh:'1.7', use:'주요 본문'},
+  {name:'Body M',  size:'13px', weight:'400', lh:'1.6', use:'일반 본문'},
+  {name:'Caption', size:'11px', weight:'400', lh:'1.5', use:'보조 정보'},
+  {name:'Label',   size:'11px', weight:'500', lh:'1.4', use:'뱃지, 태그'},
+];
+
+const SPACING = [
+  {t:'spacing/1',  v:'4px',  px:4,  u:'아이콘 간격, 인라인 갭'},
+  {t:'spacing/2',  v:'8px',  px:8,  u:'컴포넌트 내부 패딩'},
+  {t:'spacing/3',  v:'12px', px:12, u:'아이템 간격'},
+  {t:'spacing/4',  v:'16px', px:16, u:'카드 패딩, 섹션 간격'},
+  {t:'spacing/5',  v:'20px', px:20, u:'그리드 갭'},
+  {t:'spacing/6',  v:'24px', px:24, u:'섹션 내부 여백'},
+  {t:'spacing/8',  v:'32px', px:32, u:'주요 섹션 간격'},
+  {t:'spacing/10', v:'40px', px:40, u:'페이지 패딩'},
+  {t:'spacing/12', v:'48px', px:48, u:'대형 섹션 간격'},
+];
+
+function isDark() { return document.documentElement.dataset.theme === 'dark'; }
+
+function buildColors() {
+  const dark = isDark();
+  function grid(id, list) {
+    document.getElementById(id).innerHTML = list.map(c => {
+      const bg = dark ? c.d : c.l;
+      return `<div class="color-card">
+        <div class="color-swatch" style="background:${bg}"></div>
+        <div class="color-info">
+          <div class="color-name">${c.name}</div>
+          <div class="color-hex">${bg}</div>
+          <div class="color-role">${c.role}</div>
+        </div>
+      </div>`;
+    }).join('');
+  }
+  grid('primary-grid', COLORS.primary);
+  grid('semantic-grid', COLORS.semantic);
+  grid('neutral-grid', COLORS.neutral);
+}
+
+function buildType() {
+  document.getElementById('type-scale').innerHTML = TYPE.map(t =>
+    `<div class="type-row">
+      <div class="type-meta">
+        <div class="type-name">${t.name}</div>
+        <div class="type-spec">${t.size} / w${t.weight} / lh${t.lh}</div>
+      </div>
+      <div class="type-sample" style="font-size:${t.size};font-weight:${t.weight};line-height:${t.lh}">
+        구독 서비스 관리<span class="type-use">${t.use}</span>
+      </div>
+    </div>`
+  ).join('');
+}
+
+function buildSpacing() {
+  const MAX = 48;
+  document.getElementById('spacing-grid').innerHTML = SPACING.map(s =>
+    `<div class="spacing-row">
+      <span class="spacing-label">${s.t}</span>
+      <div class="spacing-bar-wrap">
+        <div class="spacing-bar" style="width:${Math.round(s.px/MAX*160)}px"></div>
+      </div>
+      <span class="spacing-val">${s.v}</span>
+      <span class="spacing-use">${s.u}</span>
+    </div>`
+  ).join('');
+}
+
+function buildFigma() {
+  const groups = [
+    {title:'Primary Colors',            items: COLORS.primary},
+    {title:'Semantic Colors',           items: COLORS.semantic},
+    {title:'Neutral / Background / Text', items: COLORS.neutral},
+  ];
+  document.getElementById('figma-vars').innerHTML = groups.map(g =>
+    `<div class="figma-group">
+      <div class="figma-group-title">${g.title}</div>
+      ${g.items.map(c =>
+        `<div class="figma-row">
+          <div class="dot" style="background:${c.l}" title="Light"></div>
+          <div class="dot dot-dark" style="background:${c.d}" title="Dark"></div>
+          <span class="figma-var">${c.v}</span>
+          <span class="figma-lv">${c.l}</span>
+          <span class="figma-sep">/</span>
+          <span class="figma-dv">${c.d}</span>
+        </div>`
+      ).join('')}
+    </div>`
+  ).join('');
+}
+
+function switchTab(id) {
+  const ids = ['colors','type','spacing','components','figma'];
+  document.querySelectorAll('.tab').forEach((t, i) => t.classList.toggle('active', ids[i] === id));
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.toggle('active', c.id === 'tab-' + id));
+}
+
+function copyFigma() {
+  const all = [...COLORS.primary, ...COLORS.semantic, ...COLORS.neutral];
+  const lines = [
+    '/* Subly Design System — Figma Variable Values */',
+    '',
+    '/* ── Light Mode ── */',
+    ...all.map(c => `${c.v}: ${c.l};`),
+    '',
+    '/* ── Dark Mode ── */',
+    ...all.map(c => `${c.v}: ${c.d};`),
+  ];
+  navigator.clipboard.writeText(lines.join('\n')).then(() => {
+    const btn = document.querySelector('.figma-copy-btn');
+    const orig = btn.innerHTML;
+    btn.innerHTML = '<i class="ti ti-check"></i> 복사됨!';
+    setTimeout(() => btn.innerHTML = orig, 2000);
+  });
+}
+
+document.getElementById('dark-toggle').addEventListener('change', e => {
+  const dark = e.target.checked;
+  document.documentElement.dataset.theme = dark ? 'dark' : '';
+  document.getElementById('mode-label').textContent = dark ? '다크 모드' : '라이트 모드';
+  document.getElementById('mode-badge').textContent = dark ? 'Dark' : 'Light';
+  buildColors();
+  buildFigma();
+});
+
+buildColors();
+buildType();
+buildSpacing();
+buildFigma();
+</script>
+</body>
+</html>
